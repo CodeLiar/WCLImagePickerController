@@ -34,11 +34,11 @@ internal extension UIViewController {
     func addWCLPhotoNavRightButton(_ btName:String) -> UIButton {
         let rightBt = UIButton()
         rightBt.contentHorizontalAlignment = .right
-        rightBt.setTitle(btName, for: UIControlState())
-        rightBt.setTitleColor(UIColor.white, for: UIControlState())
+        rightBt.setTitle(btName, for: UIControl.State())
+        rightBt.setTitleColor(UIColor.white, for: UIControl.State())
         rightBt.titleLabel?.font = UIFont.WCLRegularFontOfSize(15)
         rightBt.addTarget(self, action: #selector(photoRightAction(_:)), for: .touchUpInside)
-        rightBt.frame.size = CGSize(width: 16*CGFloat(btName.characters.count), height: 20)
+        rightBt.frame.size = CGSize(width: 16*CGFloat(btName.count), height: 20)
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(customView: rightBt)
         return rightBt
     }
@@ -50,10 +50,10 @@ internal extension UIViewController {
     func addWCLPhotoNavLeftButton(_ btName:String) -> UIButton {
         let leftBt = UIButton()
         leftBt.contentHorizontalAlignment = .left
-        leftBt.setTitle(btName, for: UIControlState())
-        leftBt.setTitleColor(UIColor.white, for: UIControlState())
+        leftBt.setTitle(btName, for: UIControl.State())
+        leftBt.setTitleColor(UIColor.white, for: UIControl.State())
         leftBt.titleLabel?.font = UIFont.WCLRegularFontOfSize(15)
-        leftBt.frame.size = CGSize(width: 16*CGFloat(btName.characters.count), height: 20)
+        leftBt.frame.size = CGSize(width: 16*CGFloat(btName.count), height: 20)
         leftBt.addTarget(self, action: #selector(photoLeftAction(_:)), for: .touchUpInside)
         leftBt.sizeToFit()
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: leftBt)
@@ -74,11 +74,11 @@ internal extension UIViewController {
         return titleLable
     }
     
-    func photoLeftAction(_ sender: UIButton) {
+    @objc func photoLeftAction(_ sender: UIButton) {
         
     }
     
-    func photoRightAction(_ sender: UIButton) {
+    @objc func photoRightAction(_ sender: UIButton) {
         
     }
 }

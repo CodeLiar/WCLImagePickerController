@@ -149,7 +149,7 @@ public class WCLPickerManager: NSObject {
      - returns: PHAsset在选择的数组的index
      */
     public func index(ofSelect alasset: PHAsset) -> Int? {
-        return selectPhotoArr.index(of: alasset)
+        return selectPhotoArr.firstIndex(of: alasset)
     }
     
     /**
@@ -226,7 +226,7 @@ public class WCLPickerManager: NSObject {
      - parameter alasset:       相册里图片的PHAsset
      - parameter resultHandler: 返回照片元数据的回调
      */
-    public func getPhotoData(alasset: PHAsset?, resultHandler: ((Data?, UIImageOrientation) -> Void)?) {
+    public func getPhotoData(alasset: PHAsset?, resultHandler: ((Data?, UIImage.Orientation) -> Void)?) {
         if alasset != nil {
             self.photoManage.requestImageData(for: alasset!, options: nil, resultHandler: { (data, str, orientation, hashable) in
                 resultHandler?(data, orientation)

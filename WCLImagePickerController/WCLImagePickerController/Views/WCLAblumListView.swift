@@ -68,14 +68,14 @@ internal class WCLAblumListView: UIView,
     }
     
     //MARK: Initial Methods
-    class func `init`(pickerManager: WCLPickerManager) -> WCLAblumListView {
+    class func create(by pickerManager: WCLPickerManager) -> WCLAblumListView {
         let view = UINib.init(nibName: "WCLAblumListView", bundle: WCLImagePickerBundle.bundle).instantiate(withOwner: nil, options: nil).first as! WCLAblumListView
         view.pickerManager = pickerManager
         return view
     }
     
     class func show(inView: UIView, pickerManager: WCLPickerManager) -> WCLAblumListView {
-        let view = WCLAblumListView.init(pickerManager: pickerManager)
+        let view = WCLAblumListView.create(by: pickerManager)
         view.frame = inView.bounds
         inView.addSubview(view)
         view.isUserInteractionEnabled = false

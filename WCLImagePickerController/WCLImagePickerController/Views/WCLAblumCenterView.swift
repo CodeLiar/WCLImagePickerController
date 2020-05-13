@@ -26,7 +26,7 @@
 
 import UIKit
 
-internal class WCLAblumCenterView: UIView {
+internal class WCLAblumCenterView: UIControl {
 
     var centerTitle:String? {
         didSet {
@@ -55,6 +55,11 @@ internal class WCLAblumCenterView: UIView {
         titleLabel.textColor = UIColor.white
         addSubview(arrowImageView)
         addSubview(titleLabel)
+        let height = NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: frame.height);
+        addConstraint(height)
+        
+        let width = NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1.0, constant: frame.width)
+        addConstraint(width)
         //添加约束
         arrowImageView.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -62,12 +67,14 @@ internal class WCLAblumCenterView: UIView {
         addConstraint(NSLayoutConstraint.init(item: titleLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         addConstraint(NSLayoutConstraint.init(item: arrowImageView, attribute: .centerY, relatedBy: .equal, toItem: titleLabel, attribute: .centerY, multiplier: 1.0, constant: 0.0))
         addConstraint(NSLayoutConstraint.init(item: arrowImageView, attribute: .left, relatedBy: .equal, toItem: titleLabel, attribute: .right, multiplier: 1.0, constant: 7.0))
+        addTarget(self, action: #selector(tapAction(_:)), for: .touchUpInside)
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    @objc func tapAction(_ btn: UIControl) {
         isSelect = !isSelect
         selectBlockAction()
     }
+    
     
     func selectBlockAction() {
         if selectBlock != nil {

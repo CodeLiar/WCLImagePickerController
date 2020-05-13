@@ -77,7 +77,7 @@ internal class WCLPhotoSelectView: UIView,
     }
     
     //MARK: Initial Methods
-    class func `init`(frame: CGRect, pickerManager: WCLPickerManager) -> WCLPhotoSelectView {
+    class func create(frame: CGRect, pickerManager: WCLPickerManager) -> WCLPhotoSelectView {
         let view = UINib.init(nibName: "WCLPhotoSelectView", bundle: WCLImagePickerBundle.bundle).instantiate(withOwner: nil, options: nil).first as! WCLPhotoSelectView
         view.frame         = frame
         view.pickerManager = pickerManager

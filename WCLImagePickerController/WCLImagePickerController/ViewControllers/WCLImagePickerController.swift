@@ -178,6 +178,8 @@ public class WCLImagePickerController: UIViewController {
             // 用户已授权
             configPhotoVC()
             break
+        @unknown default:
+            break
         }
     }
     
@@ -223,11 +225,11 @@ public class WCLImagePickerController: UIViewController {
     fileprivate func addSelectView() {
         if WCLImagePickerOptions.isShowSelecView {
             let bounds = UIScreen.main.bounds
-            photoSelectView = WCLPhotoSelectView.init(frame: CGRect.init(origin: CGPoint.init(x: 0, y: bounds.height - 47 - 64), size: CGSize.init(width: bounds.width, height: 47)), pickerManager: pickerManager!)
+            photoSelectView = WCLPhotoSelectView.create(frame: CGRect.init(origin: CGPoint.init(x: 0, y: bounds.height - 47 - 64), size: CGSize.init(width: bounds.width, height: 47)), pickerManager: pickerManager!)
             photoSelectView?.pushBlock = { [weak self] (vc) in
                 self?.navigationController?.pushViewController(vc, animated: true)
             }
-            photoAblumCV.contentInset = UIEdgeInsetsMake(0, 0, 47, 0)
+            photoAblumCV.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 47, right: 0)
             photoSelectView?.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(photoSelectView!)
             photoSelectView?.addConstraint(NSLayoutConstraint(item: photoSelectView!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: 47))
@@ -236,7 +238,7 @@ public class WCLImagePickerController: UIViewController {
             view.addConstraint(NSLayoutConstraint(item: photoSelectView!, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1.0, constant: 0))
             
         }else {
-            photoAblumCV.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+            photoAblumCV.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         }
     }
     
@@ -244,7 +246,7 @@ public class WCLImagePickerController: UIViewController {
         if cameraAuthorization() {
             pickerView.navigationBar.barTintColor = WCLImagePickerOptions.tintColor
             pickerView.navigationBar.tintColor    = UIColor.white
-            pickerView.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+            pickerView.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
             pickerView.delegate = self
             pickerView.sourceType = .camera
             self.present(pickerView, animated: true, completion: nil)
@@ -252,16 +254,16 @@ public class WCLImagePickerController: UIViewController {
     }
     
     fileprivate func cameraAuthorization() -> Bool {
-        let mediaType = AVMediaTypeVideo
-        let authorizationStatus = AVCaptureDevice.authorizationStatus(forMediaType: mediaType)
+        let mediaType = AVMediaType.video
+        let authorizationStatus = AVCaptureDevice.authorizationStatus(for: mediaType)
         /// 是否在模拟器
-        #if (arch(i386) || arch(x86_64)) && os(iOS)
+        #if targetEnvironment(simulator)
             NotificationCenter.default.post(name: WCLImagePickerNotify.imagePickerError, object: WCLError.noCameraPermissions)
             return false
         #else
             if authorizationStatus == .restricted || authorizationStatus == .denied {
                 NotificationCenter.default.post(name: WCLImagePickerNotify.imagePickerError, object: WCLError.noCameraPermissions)
-                AVCaptureDevice.requestAccess(forMediaType: mediaType, completionHandler: { (flag) in
+                AVCaptureDevice.requestAccess(for: mediaType, completionHandler: { (flag) in
                     if flag {
                         self.imageCamereShow()
                     }
@@ -359,19 +361,19 @@ extension WCLImagePickerController: UICollectionViewDelegate,
 extension WCLImagePickerController: UIImagePickerControllerDelegate,
                                     UINavigationControllerDelegate {
     //MARK: UIImagePickerControllerDelegate
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            picker.dismiss(animated: true, completion: {
-                DispatchQueue.main.async {
-                    self.delegate?.wclImagePickerComplete(self, imageArr: [image])
-                }
-                PHPhotoLibrary.shared().performChanges({
-                    PHAssetChangeRequest.creationRequestForAsset(from: image)
-                }, completionHandler: { (flag, error) in
-                    
-                })
-            })
-        }
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+                   picker.dismiss(animated: true, completion: {
+                       DispatchQueue.main.async {
+                           self.delegate?.wclImagePickerComplete(self, imageArr: [image])
+                       }
+                       PHPhotoLibrary.shared().performChanges({
+                           PHAssetChangeRequest.creationRequestForAsset(from: image)
+                       }, completionHandler: { (flag, error) in
+                           
+                       })
+                   })
+               }
     }
     
     public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

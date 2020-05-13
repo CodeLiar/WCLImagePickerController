@@ -57,7 +57,7 @@ class WCLPickerCVCell: UICollectionViewCell,
     func animation() -> WCLPickerCVCell {
         let animation = CAKeyframeAnimation.init(keyPath: "transform.scale")
         animation.duration = 0.35
-        animation.calculationMode = kCAAnimationCubic
+        animation.calculationMode = CAAnimationCalculationMode.cubic
         animation.values = [1.0 ,1.4, 0.9, 1.15, 0.95, 1.02, 1.0]
         self.selectNumBt.layer.add(animation, forKey: "scaleAnimation")
         return self

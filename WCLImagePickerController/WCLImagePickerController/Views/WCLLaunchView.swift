@@ -44,10 +44,10 @@ internal class WCLLaunchView: UIView, CAAnimationDelegate {
         //设置代理，方便完成动画后移除当前view
         topAnimation.delegate = self
         //设置动画速度为匀速
-        topAnimation.timingFunction = CAMediaTimingFunction.init(name: kCAMediaTimingFunctionLinear)
+        topAnimation.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.linear)
         //设置动画结束后不移除点，保持移动后的位置
         topAnimation.isRemovedOnCompletion = false
-        topAnimation.fillMode = kCAFillModeForwards
+        topAnimation.fillMode = CAMediaTimingFillMode.forwards
         topLayer.add(topAnimation, forKey: "topAnimation")
         
         //创建一个CABasicAnimation作用于CALayer的anchorPoint
@@ -57,10 +57,10 @@ internal class WCLLaunchView: UIView, CAAnimationDelegate {
         //动画时间
         bottomAnimation.duration = 0.6
         //设置动画速度为匀速
-        bottomAnimation.timingFunction = CAMediaTimingFunction.init(name: kCAMediaTimingFunctionLinear)
+        bottomAnimation.timingFunction = CAMediaTimingFunction.init(name: CAMediaTimingFunctionName.linear)
         //设置动画结束后不移除点，保持移动后的位置
         bottomAnimation.isRemovedOnCompletion = false
-        bottomAnimation.fillMode = kCAFillModeForwards
+        bottomAnimation.fillMode = CAMediaTimingFillMode.forwards
         bottomLayer.add(bottomAnimation, forKey: "topAnimation")
     }
     
